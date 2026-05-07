@@ -26,11 +26,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-mint-100">
             <h4 class="font-bold text-gray-800 mb-6">Tren Pendapatan (7 Hari Terakhir)</h4>
-            <canvas id="revenueChart" height="250"></canvas>
+            <div class="relative h-80 w-full">
+                <canvas id="revenueChart"></canvas>
+            </div>
         </div>
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-mint-100">
             <h4 class="font-bold text-gray-800 mb-6">5 Barang Paling Laris</h4>
-            <canvas id="topBarangsChart" height="250"></canvas>
+            <div class="relative h-80 w-full">
+                <canvas id="topBarangsChart"></canvas>
+            </div>
         </div>
     </div>
 
