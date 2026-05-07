@@ -35,13 +35,9 @@
 ">
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-mint-100 flex-shrink-0 hidden md:flex flex-col">
-        <div class="p-6 border-b border-mint-100">
-            <h1 class="text-2xl font-bold text-mint-700 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                Rafa Kasir
-            </h1>
+        <div class="p-6 border-b border-mint-100 flex items-center gap-3">
+            <img src="{{ asset('logo/image.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+            <h1 class="text-xl font-bold text-mint-700">Rafa Kasir</h1>
         </div>
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             @if(Auth::user()->role === 'admin')

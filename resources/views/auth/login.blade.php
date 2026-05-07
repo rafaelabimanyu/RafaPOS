@@ -12,10 +12,8 @@
 <body class="bg-mint-50 min-h-screen flex items-center justify-center p-6">
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-10 border border-mint-100">
         <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-mint-400 rounded-2xl mb-4 shadow-lg shadow-mint-200">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+            <div class="inline-flex items-center justify-center mb-4">
+                <img src="{{ asset('logo/image.png') }}" alt="Logo Rafa Kasir" class="w-24 h-24 object-contain">
             </div>
             <h1 class="text-3xl font-bold text-gray-800">Rafa Kasir</h1>
             <p class="text-gray-500 mt-2">Silakan masuk ke akun Anda</p>

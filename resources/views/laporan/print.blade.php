@@ -20,6 +20,7 @@
 </head>
 <body onload="window.print()">
     <div class="header">
+        <img src="{{ asset('logo/image.png') }}" alt="Logo" style="width: 80px; height: 80px; object-contain: fill; margin-bottom: 10px;">
         <h1>Rafa Kasir</h1>
         <p>Laporan Penjualan Keseluruhan</p>
         <p>Tanggal Cetak: {{ date('d F Y H:i') }}</p>

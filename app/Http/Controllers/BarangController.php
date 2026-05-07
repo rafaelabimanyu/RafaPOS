@@ -9,7 +9,7 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $barangs = Barang::all();
+        $barangs = Barang::with('kategori_rel')->get();
         return view('barang.index', compact('barangs'));
     }
 
@@ -17,7 +17,7 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'kategori' => 'required',
+            'kategori_id' => 'required|exists:kategoris,id',
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
         ]);
@@ -31,7 +31,7 @@ class BarangController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'kategori' => 'required',
+            'kategori_id' => 'required|exists:kategoris,id',
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
         ]);
