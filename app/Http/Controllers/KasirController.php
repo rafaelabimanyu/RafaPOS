@@ -24,9 +24,11 @@ class KasirController extends Controller
             'items' => 'required|array|min:1',
             'bayar' => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
+            'diskon' => 'nullable|numeric|min:0',
+            'total_akhir' => 'required|numeric|min:0',
         ]);
 
-        if ($request->bayar < $request->total_harga) {
+        if ($request->bayar < $request->total_akhir) {
             return back()->with('error', 'Pembayaran tidak cukup.');
         }
 
@@ -37,8 +39,10 @@ class KasirController extends Controller
                 'user_id' => Auth::id(),
                 'kode_transaksi' => 'TRX-' . strtoupper(Str::random(8)),
                 'total_harga' => $request->total_harga,
+                'diskon' => $request->diskon ?? 0,
+                'total_akhir' => $request->total_akhir,
                 'bayar' => $request->bayar,
-                'kembalian' => $request->bayar - $request->total_harga,
+                'kembalian' => $request->bayar - $request->total_akhir,
             ]);
 
             foreach ($request->items as $item) {

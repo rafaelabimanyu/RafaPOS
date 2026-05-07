@@ -71,12 +71,28 @@
             </div>
 
             <div class="p-6 bg-mint-50/50 border-t border-mint-100 space-y-4">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Total Harga</span>
-                    <span class="text-2xl font-black text-gray-900">Rp <span x-text="formatNumber(totalPrice)"></span></span>
+                <div class="space-y-2 border-b border-mint-100 pb-4">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500">Subtotal</span>
+                        <span class="text-gray-700 font-bold">Rp <span x-text="formatNumber(totalPrice)"></span></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500">Diskon</span>
+                        <div class="flex items-center gap-2">
+                            <select x-model="discountType" class="text-xs bg-white border border-gray-200 rounded p-1 outline-none">
+                                <option value="percent">%</option>
+                                <option value="nominal">Rp</option>
+                            </select>
+                            <input type="number" x-model="discountValue" class="w-20 text-right text-xs bg-white border border-gray-200 rounded p-1 outline-none" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-gray-600 font-bold">Total Akhir</span>
+                        <span class="text-2xl font-black text-mint-700">Rp <span x-text="formatNumber(totalAfterDiscount)"></span></span>
+                    </div>
                 </div>
                 
-                <form action="{{ route('kasir.process') }}" method="POST">
+                <form action="{{ route('kasir.process') }}" method="POST" id="checkoutForm">
                     @csrf
                     <template x-for="(item, index) in cart" :key="item.id">
                         <div>
@@ -86,6 +102,8 @@
                         </div>
                     </template>
                     <input type="hidden" name="total_harga" :value="totalPrice">
+                    <input type="hidden" name="diskon" :value="calculateDiscount">
+                    <input type="hidden" name="total_akhir" :value="totalAfterDiscount">
 
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Bayar</label>
@@ -95,12 +113,12 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center mb-6" x-show="bayar >= totalPrice">
-                        <span class="text-gray-600">Kembalian</span>
-                        <span class="text-lg font-bold text-mint-700">Rp <span x-text="formatNumber(bayar - totalPrice)"></span></span>
+                    <div class="flex justify-between items-center mb-6" x-show="bayar >= totalAfterDiscount">
+                        <span class="text-gray-600 font-medium">Kembalian</span>
+                        <span class="text-lg font-bold text-gray-800">Rp <span x-text="formatNumber(bayar - totalAfterDiscount)"></span></span>
                     </div>
 
-                    <button type="submit" :disabled="cart.length === 0 || bayar < totalPrice" class="w-full bg-mint-400 hover:bg-mint-500 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-black py-4 rounded-xl transition shadow-lg shadow-mint-100 text-lg uppercase tracking-widest">
+                    <button type="submit" :disabled="cart.length === 0 || bayar < totalAfterDiscount" class="w-full bg-mint-400 hover:bg-mint-500 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-black py-4 rounded-xl transition shadow-lg shadow-mint-100 text-lg uppercase tracking-widest">
                         Proses Pembayaran
                     </button>
                 </form>
@@ -116,15 +134,27 @@
             barangs: @json($barangs),
             cart: [],
             bayar: 0,
+            discountType: 'percent',
+            discountValue: 0,
             get filteredBarangs() {
                 if (this.search === '') return this.barangs;
                 return this.barangs.filter(b => 
                     b.nama.toLowerCase().includes(this.search.toLowerCase()) || 
-                    b.kategori.toLowerCase().includes(this.search.toLowerCase())
+                    (b.kategori_rel && b.kategori_rel.nama.toLowerCase().includes(this.search.toLowerCase()))
                 );
             },
             get totalPrice() {
                 return this.cart.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+            },
+            get calculateDiscount() {
+                if (this.discountType === 'percent') {
+                    return (this.totalPrice * this.discountValue) / 100;
+                }
+                return parseFloat(this.discountValue || 0);
+            },
+            get totalAfterDiscount() {
+                const total = this.totalPrice - this.calculateDiscount;
+                return total > 0 ? total : 0;
             },
             addToCart(barang) {
                 const existing = this.cart.find(item => item.id === barang.id);

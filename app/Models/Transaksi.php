@@ -13,6 +13,8 @@ class Transaksi extends Model
         'user_id',
         'kode_transaksi',
         'total_harga',
+        'diskon',
+        'total_akhir',
         'bayar',
         'kembalian',
     ];

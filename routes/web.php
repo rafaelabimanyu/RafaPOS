@@ -18,14 +18,26 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
         
+        // Kategori Management (New)
+        Route::resource('kategori', \App\Http\Controllers\KategoriController::class);
+
         // Barang Management (Admin full access)
         Route::resource('barang', BarangController::class);
         
-        // Stok History (Admin view only, basically)
+        // Stok History
         Route::get('/stok', [StokController::class, 'index'])->name('stok.index');
         
         // User (Petugas) Management
         Route::resource('user', UserController::class);
+
+        // Laporan (New)
+        Route::get('/laporan', [\App\Http\Controllers\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/export', [\App\Http\Controllers\LaporanController::class, 'exportExcel'])->name('laporan.export');
+        Route::get('/laporan/print', [\App\Http\Controllers\LaporanController::class, 'printPdf'])->name('laporan.print');
+
+        // Pengaturan Toko (New)
+        Route::get('/pengaturan', [\App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan.index');
+        Route::post('/pengaturan', [\App\Http\Controllers\PengaturanController::class, 'update'])->name('pengaturan.update');
     });
 
     // Petugas Routes

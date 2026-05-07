@@ -11,11 +11,17 @@ class Barang extends Model
 
     protected $fillable = [
         'nama',
-        'kategori',
+        'kategori_id',
+        'kategori', // keeping for legacy if needed, but primarily using kategori_id now
         'harga_beli',
         'harga_jual',
         'stok',
     ];
+
+    public function kategori_rel()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
 
     public function stoks()
     {
